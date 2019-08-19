@@ -1,6 +1,7 @@
 Render = "lid"; // [case:Case,lid:Lid]
 
-wall_thickness=5;
+wall_thickness=2;
+corner_thickness_factor=3;
 lid_thickness=2;
 floor_thickness=10;
 wall_height=70;
@@ -17,10 +18,24 @@ module case() {
         cube([wall_width,wall_thickness,wall_height]);
         cube([wall_thickness,wall_length,wall_height]);
         cube([wall_width,wall_length,floor_thickness]); // floor
+
     translate([0,wall_length,0])
         cube([wall_width,wall_thickness,wall_height]);
+
     translate([wall_width,0,0])
         cube([wall_thickness,wall_length+wall_thickness,wall_height]);
+
+    // Corners
+    translate([wall_thickness,wall_thickness,0])
+        cube([wall_thickness*corner_thickness_factor,wall_thickness*corner_thickness_factor,wall_height]);
+    translate([wall_width-wall_thickness*3,wall_thickness,0])
+        cube([wall_thickness*corner_thickness_factor,wall_thickness*corner_thickness_factor,wall_height]);
+    translate([wall_thickness,wall_length-wall_thickness*3,0])
+        cube([wall_thickness*corner_thickness_factor,wall_thickness*corner_thickness_factor,wall_height]);
+    translate([wall_width-wall_thickness*3,wall_length-wall_thickness*3,0])
+        cube([wall_thickness*corner_thickness_factor,wall_thickness*corner_thickness_factor,wall_height]);
+
+
 };
 
 module lid() {
