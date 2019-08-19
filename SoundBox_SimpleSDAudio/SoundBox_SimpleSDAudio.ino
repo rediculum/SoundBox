@@ -39,21 +39,22 @@ https://learn.sparkfun.com/tutorials/multiplexer-breakout-hookup-guide/all
 #define SD_CHIPSELECT_PIN 10
 #define LED_PIN 13 // onboard LED
 #define SIG_PIN 14 // A0
-
 #define BUTTONS 8 // How many acrade buttons
 //#define BUTTONS 16 
 
+// Define your S-pins from your multiplexer here. 
+const int selectPins[3] = {2,3,4}; // like any 4051
+//const int selectPins[4] = {2,3,4,5}; // CD74HC4067
+
+byte s_pins = sizeof(selectPins);
+
 void setup() {
-  // Define your S-pins from your multiplexer here. 
-  const int selectPins[3] = {2,3,4}; 
-  //const int selectPins[4] = {2,3,4,5}; // CD74HC4067
 
   Serial.begin(57600); // Set console to 57600 baud
   Serial.println("=== SoundBox based on SSDA ===");  
 
   pinMode(LED_PIN, OUTPUT);
-  byte s_pins = sizeof(selectPins);
-
+  
   // Set Chip Select Pin
   SdPlay.setSDCSPin(SD_CHIPSELECT_PIN);
   // Initialize SD Card with library SimpleSDAudio
@@ -68,7 +69,7 @@ void loop(void) {
   // Loop through all eight pins holding an arcade button.
   for (byte button=0; button<=BUTTONS; button++)
   {
-    selectMuxPin(pin, s_pins);
+    selectMuxPin(button, s_pins);
     // read Z and reduce value
     byte launch = map(analogRead(SIG_PIN),0,1023,0,1); 
 
