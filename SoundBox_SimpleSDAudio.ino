@@ -50,10 +50,6 @@ void setup() {
   pinMode(S1_PIN, OUTPUT);
   pinMode(S2_PIN, OUTPUT);
   pinMode(S3_PIN, OUTPUT);
-}
-
-void loop(void) { 
-  int countImpulse=1;
 
   // Set Chip Select Pin
   SdPlay.setSDCSPin(SD_CHIPSELECT_PIN);
@@ -63,6 +59,11 @@ void loop(void) {
     tone(SPEAKER_PIN,80); delay(600); noTone(SPEAKER_PIN);
     Serial.println("Error initializing SD Card");
   }
+}
+
+void loop(void) { 
+  int countImpulse=1;
+
   /* define a char array with an index size of 6 and convert
   integer "countImpulse" to char "track" using utoa() function
   http://www.nongnu.org/avr-libc/user-manual/group__avr__stdlib.html 
@@ -80,7 +81,6 @@ void loop(void) {
       ;
     }
     SdPlay.deInit();
-    // That's it, we go sleeping
   } else {
     SdPlay.deInit();
     Serial.print("File "); Serial.print(track); Serial.println(" not found");
