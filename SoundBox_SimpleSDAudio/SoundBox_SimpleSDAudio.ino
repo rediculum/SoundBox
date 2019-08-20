@@ -63,12 +63,14 @@ bool fade = true; // only works with analog Z on mux
 #include <SimpleSDAudio.h>
 
 byte s_pins = sizeof(selectPins);
-
+byte brightness = 0;
+bool increment;
+  
 void setup() {
 
   Serial.begin(57600); // Set console to 57600 baud
   Serial.println("=== SoundBox based on SSDA ===");  
-  if (led)
+  if (led) {
     pinMode(Z_LED_PIN, OUTPUT);
 
     for (byte button=0; button<=BUTTONS; button++)  {
@@ -112,16 +114,13 @@ void loop(void) {
       if (SdPlay.setFile(track)) {
         Serial.print("Playing..."); Serial.println(track);
         SdPlay.play();
-        if (fade) {
-          byte brightness = 0;
-          bool increment;
-        }
+
         while(!SdPlay.isStopped()) {
           if (led) {
             if (fade) {
               analogWrite(Z_LED_PIN, brightness);
-              (brightness == 0) ? increment == true;
-              (brightness == 255) ? increment == false ;
+              (brightness == 0) ? increment == true : true;
+              (brightness == 255) ? increment == false : true;
               (increment) ? brightness++ : brightness--;
               delay(30);
             } else {
