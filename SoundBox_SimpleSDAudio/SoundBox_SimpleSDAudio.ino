@@ -11,12 +11,12 @@ https://github.com/rediculum/SoundBox
 
 SD Card > Arduino pinout:
 
-SCK  (5) -> Pin 9
+SCK  (5) -> Pin 13 must be!
 CS (1)   -> Pin 10 (Chip select)
-MOSI (2) -> Pin 11
-MISO (7) -> Pin 12
+MOSI (2) -> Pin 11 must be!
+MISO (7) -> Pin 12 must be!
 
-Speaker (sound) -> Pin 6 and GND (use a poti for volume regulation)
+Speaker (sound) -> Pin 9 and GND
 
 Multiplexer > Arduino pinout:
 S0 -> Pin 2
@@ -40,19 +40,19 @@ https://learn.sparkfun.com/tutorials/multiplexer-breakout-hookup-guide/all
 */
 
 // Pin assignment
-#define SPEAKER_PIN 6
+#define SPEAKER_PIN 9
 #define SD_CHIPSELECT_PIN 10
-#define Z_SWITCH_PIN 14 // A0
-#define Z_LED_PIN 15 // A1
-#define BUTTONS 8 // Amount of acrade buttons
-//#define BUTTONS 16 
+#define Z_SWITCH_PIN A0
+#define Z_LED_PIN A1
+//#define BUTTONS 8 // Amount of acrade buttons
+#define BUTTONS 16 
 
 // Define your S-pins from your multiplexer here. 
-const int selectPins[3] = {2,3,4}; // like any 4051
-//const int selectPins[4] = {2,3,4,5}; // CD74HC4067
+//const byte selectPins[] = {2, 3, 4}; // like any 4051
+const byte selectPins[] = {2, 3, 4, 5}; // CD74HC4067
 
 // Do you use a 2nd multiplexer for the button LEDs?
-bool led = true;
+bool led = false;
 bool fade = true; // only works with analog Z on mux
 
 /*
@@ -67,19 +67,25 @@ byte brightness = 0;
 bool increment;
   
 void setup() {
-
-  Serial.begin(57600); // Set console to 57600 baud
+  Serial.begin(9600); // Set console to 57600 baud
   Serial.println("=== SoundBox based on SSDA ===");  
+    
   if (led) {
     pinMode(Z_LED_PIN, OUTPUT);
 
-    for (byte button=0; button<=BUTTONS; button++)  {
+    for (byte button=0; button<BUTTONS; button++)  {
       digitalWrite(Z_LED_PIN, HIGH);
       delay(100);
       digitalWrite(Z_LED_PIN, LOW);
     }
   }
-  
+
+  for (int i=0; i<s_pins; i++)
+  {
+    pinMode(selectPins[i], OUTPUT);
+    digitalWrite(selectPins[i], HIGH);
+  }
+
   // Set Chip Select Pin
   SdPlay.setSDCSPin(SD_CHIPSELECT_PIN);
   // Initialize SD Card with library SimpleSDAudio
@@ -87,26 +93,26 @@ void setup() {
     tone(SPEAKER_PIN,100); delay(250); noTone(SPEAKER_PIN); delay(400);
     tone(SPEAKER_PIN,80); delay(600); noTone(SPEAKER_PIN);
     Serial.println("Error initializing SD Card");
+  } else {
+    Serial.println("SD Card initialized");
   }
 }
 
 void loop(void) { 
-  // Loop through all eight pins holding an arcade button.
-  for (byte button=0; button<=BUTTONS; button++) {
-    selectMuxPin(button, s_pins);
+  // Loop through all eight pins holding an arcade button and set S pins accordingly.
+  for (byte button=0; button<BUTTONS; button++) {
+    for (byte i=0; i<s_pins; i++) {
+      digitalWrite(selectPins[i], button & (1<<i)?HIGH:LOW);
+    }
     // read Z and reduce value
-    byte launch = map(analogRead(Z_SWITCH_PIN),0,1023,0,1);
-
+    byte launch = map(analogRead(Z_SWITCH_PIN),0,1010,0,1);
     if (launch) {
-      Serial.println();
-      delay(100);
-
       /* define a char array with an index size of 6 and convert
       integer "countImpulse" to char "track" using utoa() function
       http://www.nongnu.org/avr-libc/user-manual/group__avr__stdlib.html 
       */
       char track[6]; 
-      utoa(button,track,10);
+      utoa(button+1,track,10);
       // Append the suffix .PCM to the char array
       strcat(track, ".PCM");
       
@@ -115,7 +121,7 @@ void loop(void) {
         Serial.print("Playing..."); Serial.println(track);
         SdPlay.play();
 
-        while(!SdPlay.isStopped()) {
+        while(SdPlay.isPlaying()) {
           if (led) {
             if (fade) {
               analogWrite(Z_LED_PIN, brightness);
@@ -129,27 +135,17 @@ void loop(void) {
             }
           }
         }
+        SdPlay.stop();
       } else {
         Serial.print("File "); Serial.print(track); Serial.println(" not found");
-        tone(SPEAKER_PIN,80); delay(250); noTone(SPEAKER_PIN); delay(400);
-        tone(SPEAKER_PIN,120); delay(600); noTone(SPEAKER_PIN);
+        delay(500);
       }
+      
       if (led) {
         (fade) ? analogWrite(Z_LED_PIN, 0): digitalWrite(Z_LED_PIN, LOW);
       }
-    delay(200);
+    delay(20);
     }
   }
-}
-
-// The selectMuxPin function sets the S-pins
-// accordingly, given a pin from 0-7.
-void selectMuxPin(byte pin, byte pins) {
-  for (int i=0; i<pins; i++)
-  {
-    if (pin & (1<<i))
-      digitalWrite(selectPins[i], HIGH);
-    else
-      digitalWrite(selectPins[i], LOW);
-  }
+  Serial.println();
 }
