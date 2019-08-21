@@ -146,5 +146,4 @@ void loop(void) {
     delay(20);
     }
   }
-  Serial.println();
 }
