@@ -135,7 +135,6 @@ void loop(void) {
             }
           }
         }
-        SdPlay.stop();
       } else {
         Serial.print("File "); Serial.print(track); Serial.println(" not found");
         delay(500);
