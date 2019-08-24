@@ -1,9 +1,9 @@
 Render = "lid"; // [case:Case,lid:Lid]
 
-wall_thickness=2;
+wall_thickness=1.5;
 corner_thickness_factor=3;
 lid_thickness=2;
-floor_thickness=10;
+floor_thickness=8;
 wall_height=70;
 wall_width=90;
 wall_length=160;
