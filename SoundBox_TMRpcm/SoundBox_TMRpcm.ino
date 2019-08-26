@@ -66,13 +66,13 @@ bool fade = true; // only works with analog Z on mux
 
 byte s_pins = sizeof(selectPins);
 byte brightness = 0;
-bool increment;
+bool increment = true;
 
 TMRpcm SdPlay;
   
 void setup() {
   Serial.begin(9600); // Set console to 57600 baud
-  Serial.println("=== SoundBox based on SSDA ===");  
+  Serial.println("=== SoundBox based on TMRpcm ===");  
     
   if (led) {
     pinMode(Z_LED_PIN, OUTPUT);
@@ -127,10 +127,10 @@ void loop(void) {
         if (led) {
           if (fade) {
             analogWrite(Z_LED_PIN, brightness);
-            (brightness == 0) ? increment == true : true;
-            (brightness == 255) ? increment == false : true;
+            (brightness == 0) ? increment = true : true;
+            (brightness == 255) ? increment = false : true;
             (increment) ? brightness++ : brightness--;
-            delay(30);
+            delayMicroseconds(200);
           } else {
             (digitalRead(Z_LED_PIN) == "LOW") ? digitalWrite(Z_LED_PIN, HIGH) : digitalWrite(Z_LED_PIN, LOW);
             delay(200);
