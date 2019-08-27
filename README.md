@@ -21,7 +21,7 @@ S3 -> Pin 5 if you have a CD74HC4067 mux and provide 16 arcade buttons
 SIG -> Pin A0 // Z of the button switch mux
 SIG -> Pin A1 // Z of the button led mux if you use 5V luminated buttons
 ```
-![](https://github.com/rediculum/SoundBox/raw/master/images/SoundBox_proto_breadboard.jpg)
+![](https://github.com/rediculum/SoundBox/raw/master/SoundBox_fritzing.png)
 ## References and used libraries
 TMRpcm library for audio playback from SD card
 https://github.com/TMRh20/TMRpcm or install it from Arduino IDE Lib Manager
