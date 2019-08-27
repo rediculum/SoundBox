@@ -18,8 +18,16 @@ S0 -> Pin 2
 S1 -> Pin 3
 S2 -> Pin 4
 S3 -> Pin 5 if you have a CD74HC4067 mux and provide 16 arcade buttons
-SIG -> Pin A0 // Z of the button switch mux
-SIG -> Pin A1 // Z of the button led mux if you use 5V luminated buttons
+SIG (Z or A) -> Pin A0
+SIG (Z or A) -> Pin A1 if you have a 2nd mux for 5V luminated buttons
+```
+### Multiplexer -> Arcade buttons / leds:
+```
+A0 -> Button 1
+..
+A7 -> Button 8
+..
+A15 -> Button 16
 ```
 ![](https://github.com/rediculum/SoundBox/raw/master/SoundBox_fritzing.png)
 ## References and used libraries
