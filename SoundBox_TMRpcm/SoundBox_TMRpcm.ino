@@ -44,12 +44,12 @@ https://learn.sparkfun.com/tutorials/multiplexer-breakout-hookup-guide/all
 #define SD_CHIPSELECT_PIN 10
 #define Z_SWITCH_PIN A0
 #define Z_LED_PIN 6
-//#define BUTTONS 8 // Amount of acrade buttons
-#define BUTTONS 16 
+#define BUTTONS 8 // Amount of acrade buttons
+//#define BUTTONS 16 
 
 // Define your S-pins from your multiplexer here. 
-//const byte selectPins[] = {2, 3, 4}; // like any 4051
-const byte selectPins[] = {2, 3, 4, 5}; // CD74HC4067
+const byte selectPins[] = {2, 3, 4}; // like any 4051
+//const byte selectPins[] = {2, 3, 4, 5}; // CD74HC4067
 
 // Do you use a 2nd multiplexer for the button LEDs?
 bool led = false;
