@@ -72,22 +72,25 @@ TMRpcm SdPlay;
   
 void setup() {
   Serial.begin(9600); // Set console to 57600 baud
-  Serial.println("=== SoundBox based on TMRpcm ===");  
-    
-  if (led) {
-    pinMode(Z_LED_PIN, OUTPUT);
-
-    for (byte button=0; button<BUTTONS; button++)  {
-      digitalWrite(Z_LED_PIN, HIGH);
-      delay(100);
-      digitalWrite(Z_LED_PIN, LOW);
-    }
-  }
+  Serial.println("=== SoundBox based on TMRpcm ===");      
 
   for (int i=0; i<s_pins; i++)
   {
     pinMode(selectPins[i], OUTPUT);
     digitalWrite(selectPins[i], HIGH);
+  }
+  
+  if (led) {
+    pinMode(Z_LED_PIN, OUTPUT);
+
+    for (byte button=0; button<BUTTONS; button++)  {
+      for (byte i=0; i<s_pins; i++) {
+        digitalWrite(selectPins[i], button & (1<<i)?HIGH:LOW);
+      }
+      digitalWrite(Z_LED_PIN, HIGH);
+      delay(100);
+      digitalWrite(Z_LED_PIN, LOW);
+    }
   }
 
   // Set Chip Select Pin
