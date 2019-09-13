@@ -48,3 +48,14 @@ You may install the *libsox-fmt-mp3* package to support MP3 convertion.
 Refer to Thingiverse.com for STL download or use the Customizer to make your own case
 https://www.thingiverse.com/thing:3830885
 ![](https://github.com/rediculum/SoundBox/raw/master/images/SoundBox_lid_printing.jpg)
+
+## Pictures
+### Prototype connection with jumper wires and bread board
+![](https://github.com/rediculum/SoundBox/raw/master/images/SoundBox_proto_breadboard.jpg)
+
+### Final assembly with dupont cables and soldered wires
+![](https://github.com/rediculum/SoundBox/raw/master/images/SoundBox_final_assemble.jpg)
+
+### Demo video
+[![](https://img.youtube.com/vi/nFHPtpK2-tA/0.jpg)](https://youtu.be/nFHPtpK2-tA)
+
