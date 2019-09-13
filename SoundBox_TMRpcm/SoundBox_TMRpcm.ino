@@ -24,7 +24,7 @@ S1 -> Pin 3
 S2 -> Pin 4
 S3 -> Pin 5 if you have a CD74HC4067 mux and provide 16 arcade buttons
 SIG -> Pin A0 // Z of the button switch mux
-SIG -> Pin A1 // Z of the button led mux if you use 5V luminated buttons
+SIG -> Pin 6 // Z of the button led mux if you use 5V luminated buttons
 
 ===========================================================================
 References:
@@ -43,7 +43,7 @@ https://learn.sparkfun.com/tutorials/multiplexer-breakout-hookup-guide/all
 #define SPEAKER_PIN 9
 #define SD_CHIPSELECT_PIN 10
 #define Z_SWITCH_PIN A0
-#define Z_LED_PIN A1
+#define Z_LED_PIN 6
 //#define BUTTONS 8 // Amount of acrade buttons
 #define BUTTONS 16 
 
