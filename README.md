@@ -19,7 +19,7 @@ S1 -> Pin 3
 S2 -> Pin 4
 S3 -> Pin 5 if you have a CD74HC4067 mux and provide 16 arcade buttons
 SIG (Z or A) -> Pin A0
-SIG (Z or A) -> Pin A1 if you have a 2nd mux for 5V luminated buttons
+SIG (Z or A) -> Pin 6 if you have a 2nd mux for 5V luminated buttons
 ```
 ### Multiplexer -> Arcade buttons / leds:
 ```
