@@ -133,7 +133,7 @@ void loop(void) {
             (brightness == 0) ? increment = true : true;
             (brightness == 255) ? increment = false : true;
             (increment) ? brightness++ : brightness--;
-            delayMicroseconds(200);
+            delayMicroseconds(300);
           } else {
             (digitalRead(Z_LED_PIN) == "LOW") ? digitalWrite(Z_LED_PIN, HIGH) : digitalWrite(Z_LED_PIN, LOW);
             delay(200);
