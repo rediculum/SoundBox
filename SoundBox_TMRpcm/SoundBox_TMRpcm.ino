@@ -4,7 +4,8 @@ Sound Box 1.0 TMRpcm version
 by ReDiculum (Aug - Sep 2019)
 -------------------------------
 Sound box like a board to launch samples stored as 
-8bit full-rate (62500) mono WAV files named from 1.WAV to 8.WAV (16.WAV)
+8bit full-rate (62500) mono WAV files named from
+01.WAV to 08.WAV, 11.WAV to 18.WAV, 21.WAV to 28.WAV, ... 
 on a SD card with arcade buttons using a multiplexer
 
 https://github.com/rediculum/SoundBox
@@ -18,11 +19,12 @@ MISO (7) -> Pin 12 must be!
 
 Speaker (sound) -> Pin 9 and GND
 
+Potentiometer -> Pin A1
+
 Multiplexer > Arduino pinout:
 S0 -> Pin 2
 S1 -> Pin 3
 S2 -> Pin 4
-S3 -> Pin 5 if you have a CD74HC4067 mux and provide 16 arcade buttons
 SIG -> Pin A0 // Z of the button switch mux
 SIG -> Pin 6 // Z of the button led mux if you use 5V luminated buttons
 
@@ -45,11 +47,10 @@ https://learn.sparkfun.com/tutorials/multiplexer-breakout-hookup-guide/all
 #define Z_SWITCH_PIN A0
 #define Z_LED_PIN 6
 #define BUTTONS 8 // Amount of acrade buttons
-//#define BUTTONS 16 
+#define POTI A1
 
 // Define your S-pins from your multiplexer here. 
-const byte selectPins[] = {2, 3, 4}; // like any 4051
-//const byte selectPins[] = {2, 3, 4, 5}; // CD74HC4067
+const byte selectPins[] = {2, 3, 4};
 
 // Do you use a 2nd multiplexer for the button LEDs?
 bool led = false;
@@ -106,6 +107,8 @@ void setup() {
 }
 
 void loop(void) { 
+  // Read the poti value to get the decimal offset of the filename
+  byte potival = map(analogRead(POTI),0,1023,0,4);
   // Loop through all eight pins holding an arcade button and set S pins accordingly.
   for (byte button=0; button<BUTTONS; button++) {
     for (byte i=0; i<s_pins; i++) {
@@ -115,16 +118,20 @@ void loop(void) {
     byte launch = map(analogRead(Z_SWITCH_PIN),0,1010,0,1);
     if (launch) {
       /* define a char array with an index size of 6 and convert
-      integer "countImpulse" to char "track" using utoa() function
+      integer "button" to char "track" using utoa() function
       http://www.nongnu.org/avr-libc/user-manual/group__avr__stdlib.html 
       */
       char track[6]; 
       utoa(button+1,track,10);
-      // Append the suffix .PCM to the char array
-      strcat(track, ".WAV");
+      // Do the same for the poti value
+      char filename[6];
+      utoa(potival,filename,10);
+      // Append the offset and suffix to the char array
+      strcat(filename, track);
+      strcat(filename, ".WAV");
       
-      Serial.print("Playing..."); Serial.println(track);
-      SdPlay.play(track);
+      Serial.print("Playing..."); Serial.println(filename);
+      SdPlay.play(filename);
  
       while(SdPlay.isPlaying()) {
         if (led) {
